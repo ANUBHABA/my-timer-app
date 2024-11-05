@@ -1,0 +1,112 @@
+/* style.css */
+
+body {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #1e1e1e; /* Dark gray background */
+}
+
+.container {
+    text-align: center;
+    background-color: #2c2c2c; /* Slightly lighter dark gray for the container */
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    width: 90%;
+    max-width: 400px;
+    position: relative; /* Ensure container is positioned above the background */
+    z-index: 1; /* Ensure it appears above the background */
+}
+
+h1 {
+    color: #ffffff; /* White color for the heading */
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.start-options {
+    margin: 1rem 0; /* Space above and below the button options */
+}
+
+.start-button {
+    background-color: #4caf50; /* Bright green for buttons */
+    color: #ffffff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 0 0.5rem; /* Margin between buttons */
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+.start-button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+.start-button.active {
+    background-color: #388e3c; /* Highlight the active button */
+}
+
+#dateTimeLabel {
+    color: #ffffff; /* White color for label */
+    display: block; /* Ensure label displays properly */
+}
+
+input[type="datetime-local"] {
+    padding: 0.5rem;
+    border: 1px solid #555; /* Light border */
+    border-radius: 8px;
+    width: 100%;
+    margin: 1rem 0; /* Space below the input */
+    background-color: #3a3a3a; /* Dark background for input */
+    color: #ffffff; /* White text for input */
+}
+
+#timer {
+    font-size: 1.5rem;
+    margin: 1rem 0;
+    color: #00e676; /* Bright green for the timer */
+}
+
+#selectedDate {
+    font-size: 1.2rem;
+    color: #ffffff; /* White color for selected date */
+    margin: 1rem 0; /* Margin for spacing */
+    text-align: center; /* Center the text */
+    display: none; /* Initially hidden */
+}
+
+button {
+    background-color: #f44336; /* Red color for fail button */
+    color: #ffffff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 0.5rem; /* Margin between buttons */
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #d32f2f; /* Darker red on hover */
+}
+
+@media (max-width: 600px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    #timer {
+        font-size: 1.2rem;
+    }
+
+    button {
+        width: 100%;
+    }
+}
