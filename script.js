@@ -1,5 +1,6 @@
 let startDate;
 let timerInterval;
+let streakHistory = []; // Array to hold streak history
 
 // Helper function to format time duration into a readable string
 function formatDuration(timeDiff) {
@@ -18,21 +19,6 @@ function updateTimer() {
     document.getElementById("timer").textContent = formatDuration(timeDiff);
 }
 
-// Check for existing start time in localStorage on page load
-window.onload = function() {
-    const savedStartDate = localStorage.getItem('startDate');
-    if (savedStartDate) {
-        startDate = new Date(savedStartDate);
-        startTimer(); // Resume the timer if a start date was saved
-    }
-};
-
-// Start Timer function
-function startTimer() {
-    clearInterval(timerInterval);  // Clear any existing intervals
-    timerInterval = setInterval(updateTimer, 1000);  // Start the timer
-}
-
 // Button Click Handling
 document.querySelectorAll('.start-button').forEach(button => {
     button.addEventListener('click', function() {
@@ -48,7 +34,6 @@ document.querySelectorAll('.start-button').forEach(button => {
 
         if (this.id === "startNow") {
             startDate = new Date();  // Start from now
-            localStorage.setItem('startDate', startDate); // Save the start date to localStorage
             startDateTimeInput.style.display = "none"; // Hide datetime input
             startTimer(); // Start the timer directly
         } else if (this.id === "pickDate") {
@@ -60,7 +45,6 @@ document.querySelectorAll('.start-button').forEach(button => {
                 onClose: function(selectedDates) {
                     if (selectedDates.length) {
                         startDate = selectedDates[0]; // Set the selected date
-                        localStorage.setItem('startDate', startDate); // Save the start date to localStorage
                         startTimer(); // Start the timer immediately
                     }
                 }
@@ -69,6 +53,12 @@ document.querySelectorAll('.start-button').forEach(button => {
     });
 });
 
+// Start Timer function
+function startTimer() {
+    clearInterval(timerInterval);  // Clear any existing intervals
+    timerInterval = setInterval(updateTimer, 1000);  // Start the timer
+}
+
 // Reset Timer and Show Streak
 document.getElementById("resetButton").addEventListener("click", function() {
     clearInterval(timerInterval);
@@ -76,9 +66,32 @@ document.getElementById("resetButton").addEventListener("click", function() {
     const now = new Date();
     const timeDiff = now - startDate;
     const streakDuration = formatDuration(timeDiff);
-
-    // Clear the start date from localStorage when "Fail" is clicked
-    localStorage.removeItem('startDate');
-
+    
+    // Add streak duration to history
+    streakHistory.push(streakDuration);
+    
     document.getElementById("timer").textContent = `Streak ended! Your streak was: ${streakDuration}`;
+    updateStreaksDisplay(); // Update the displayed streaks
 });
+
+// Clear Streak Button
+document.getElementById("clearStreaksButton").addEventListener("click", function() {
+    // Clear the streaks array
+    streakHistory = [];
+    
+    // Update the displayed streaks list
+    updateStreaksDisplay();
+});
+
+// Function to update streaks display
+function updateStreaksDisplay() {
+    const recentStreaksList = document.getElementById("recentStreaksList");
+    recentStreaksList.innerHTML = ''; // Clear the current list
+
+    // Populate the list with current streaks
+    streakHistory.forEach(streak => {
+        const listItem = document.createElement('li');
+        listItem.textContent = streak;
+        recentStreaksList.appendChild(listItem);
+    });
+}

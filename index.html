@@ -20,13 +20,18 @@
         <!-- Date and Time Input for Custom Start -->
         <label for="startDateTime" id="dateTimeLabel" style="display: none;">Choose Start Date and Time:</label>
         <input type="text" id="startDateTime" style="display: none;" placeholder="Select Date and Time">
-        <button id="okButton" style="display: none;">OK</button> <!-- OK Button -->
 
         <p id="selectedDate" style="display: none;"></p> <!-- Selected Date -->
         <p id="timer">Focus time: Let’s make it count!</p>
-        <button id="resetButton">Fail</button>
+        <button id="resetButton" class="fail-button">Fail</button> <!-- Updated Fail Button -->
     </div>
-    
+
+    <div class="streak-history">
+        <h2>Streak History</h2>
+        <ul id="recentStreaksList"></ul>
+        <button id="clearStreaksButton" class="clear-button">Clear Streaks</button> <!-- Fixed Clear Streaks Button -->
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="script.js"></script>
 </body>
