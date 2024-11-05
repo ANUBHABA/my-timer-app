@@ -1,6 +1,6 @@
 let startDate;
 let timerInterval;
-let streakHistory = []; // Array to hold streak history
+let streaks = [];
 
 // Helper function to format time duration into a readable string
 function formatDuration(timeDiff) {
@@ -10,6 +10,21 @@ function formatDuration(timeDiff) {
     const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
 
     return `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
+}
+
+// Load saved timer state and streak history from localStorage
+function loadTimer() {
+    const savedStartDate = localStorage.getItem('startDate');
+    if (savedStartDate) {
+        startDate = new Date(savedStartDate);
+        startTimer();
+    }
+
+    const savedStreaks = localStorage.getItem('streaks');
+    if (savedStreaks) {
+        streaks = JSON.parse(savedStreaks);
+        displayStreaks();
+    }
 }
 
 // Update timer function
@@ -34,6 +49,7 @@ document.querySelectorAll('.start-button').forEach(button => {
 
         if (this.id === "startNow") {
             startDate = new Date();  // Start from now
+            localStorage.setItem('startDate', startDate); // Save to localStorage
             startDateTimeInput.style.display = "none"; // Hide datetime input
             startTimer(); // Start the timer directly
         } else if (this.id === "pickDate") {
@@ -45,6 +61,7 @@ document.querySelectorAll('.start-button').forEach(button => {
                 onClose: function(selectedDates) {
                     if (selectedDates.length) {
                         startDate = selectedDates[0]; // Set the selected date
+                        localStorage.setItem('startDate', startDate); // Save to localStorage
                         startTimer(); // Start the timer immediately
                     }
                 }
@@ -62,36 +79,41 @@ function startTimer() {
 // Reset Timer and Show Streak
 document.getElementById("resetButton").addEventListener("click", function() {
     clearInterval(timerInterval);
+    localStorage.removeItem('startDate'); // Remove from localStorage
 
     const now = new Date();
     const timeDiff = now - startDate;
     const streakDuration = formatDuration(timeDiff);
-    
-    // Add streak duration to history
-    streakHistory.push(streakDuration);
-    
+
+    // Save the streak
+    streaks.push(streakDuration);
+    localStorage.setItem('streaks', JSON.stringify(streaks)); // Save streaks to localStorage
+    displayStreaks(); // Update the displayed streaks
+
     document.getElementById("timer").textContent = `Streak ended! Your streak was: ${streakDuration}`;
-    updateStreaksDisplay(); // Update the displayed streaks
 });
 
-// Clear Streak Button
+// Clear all streaks from localStorage
 document.getElementById("clearStreaksButton").addEventListener("click", function() {
-    // Clear the streaks array
-    streakHistory = [];
-    
-    // Update the displayed streaks list
-    updateStreaksDisplay();
+    localStorage.removeItem('streaks'); // Clear streak history from localStorage
+    streaks = []; // Reset streaks array
+    document.getElementById("recentStreaksList").innerHTML = ""; // Clear displayed streaks
 });
 
-// Function to update streaks display
-function updateStreaksDisplay() {
-    const recentStreaksList = document.getElementById("recentStreaksList");
-    recentStreaksList.innerHTML = ''; // Clear the current list
+// Function to display streaks
+function displayStreaks() {
+    const streakListElement = document.getElementById("recentStreaksList");
+    streakListElement.innerHTML = ""; // Clear previous streaks
 
-    // Populate the list with current streaks
-    streakHistory.forEach(streak => {
-        const listItem = document.createElement('li');
+    // Limit to 10 streaks
+    const recentStreaks = streaks.slice(-10);
+
+    recentStreaks.forEach(streak => {
+        const listItem = document.createElement("li");
         listItem.textContent = streak;
-        recentStreaksList.appendChild(listItem);
+        streakListElement.appendChild(listItem);
     });
 }
+
+// Load timer on page load
+loadTimer();
