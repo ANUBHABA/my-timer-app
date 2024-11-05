@@ -5,13 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Study Time Tracker</title>
     <link rel="stylesheet" href="style.css">
-    <script async src="https://www.googletagmanager.com/gtag/js?id=YOUR_TRACKING_ID"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'YOUR_TRACKING_ID');
-    </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
     <div class="container">
@@ -25,15 +19,15 @@
 
         <!-- Date and Time Input for Custom Start -->
         <label for="startDateTime" id="dateTimeLabel" style="display: none;">Choose Start Date and Time:</label>
-        <input type="datetime-local" id="startDateTime" style="display: none;">
-        <button id="startButton" style="display: none;">Start</button>
+        <input type="text" id="startDateTime" style="display: none;" placeholder="Select Date and Time">
+        <button id="okButton" style="display: none;">OK</button> <!-- OK Button -->
 
-        <!-- Display Selected Date -->
-        <p id="selectedDate" style="display: none;"></p>
-
+        <p id="selectedDate" style="display: none;"></p> <!-- Selected Date -->
         <p id="timer">Focus time: Let’s make it count!</p>
         <button id="resetButton">Fail</button>
     </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="script.js"></script>
 </body>
 </html>
